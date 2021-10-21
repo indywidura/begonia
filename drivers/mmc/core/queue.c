@@ -498,7 +498,6 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card,
 			}
 
 			mmc_cmdq_setup_queue(mq, card);
-			ret = mmc_cmdq_init(mq, card);
 			if (ret) {
 				pr_notice("%s: %d: cmdq: unable to set-up\n",
 					mmc_hostname(host), ret);
