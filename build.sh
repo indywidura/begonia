@@ -1,40 +1,38 @@
-#! /bin/sh
+#!/bin/bash
 
+# Defined path
 MainPath="$(pwd)"
-clang="$(pwd)/../clang"
-gcc64="$(pwd)/../gcc64"
-gcc="$(pwd)/../gcc"
+GCC64="$(pwd)/../GCC64"
+GCC="$(pwd)/../GCC"
 Any="$(pwd)/../AnyKernel3"
 
+# Make flashable zip
 MakeZip() {
     if [ ! -d $Any ]; then
         git clone https://github.com/TeraaBytee/AnyKernel3 -b master $Any
+        cd $Any
     else
         cd $Any
         git reset --hard
-        git fetch origin master
         git checkout master
+        git fetch origin master
         git reset --hard origin/master
     fi
-    cd $Any
     cp -af $MainPath/out/arch/arm64/boot/Image.gz-dtb $Any
     sed -i "s/kernel.string=.*/kernel.string=$KERNEL_NAME-$HeadCommit test by $KBUILD_BUILD_USER/g" anykernel.sh
     zip -r9 $MainPath/"[$Compiler][R-OSS]-$ZIP_KERNEL_VERSION-$KERNEL_NAME-$TIME.zip" * -x .git README.md *placeholder
     cd $MainPath
 }
 
-if [ ! -d $clang ]; then
-    git clone --depth=1 https://github.com/TeraaBytee/google-clang -b 11.0.2 $clang
+# Clone compiler
+if [ ! -d $GCC64 ]; then
+    git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 $GCC64
+fi
+if [ ! -d $GCC ]; then
+    git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 $GCC
 fi
 
-if [ ! -d $gcc64 ]; then
-    git clone --depth=1 https://github.com/TeraaBytee/aarch64-linux-android-4.9 $gcc64
-fi
-
-if [ ! -d $gcc ]; then
-    git clone --depth=1 https://github.com/TeraaBytee/arm-linux-androideabi-4.9 $gcc
-fi
-
+# Defined config
 HeadCommit="$(git log --pretty=format:'%h' -1)"
 export ARCH="arm64"
 export SUBARCH="arm64"
@@ -45,7 +43,8 @@ KERNEL_NAME=$(cat "$MainPath/arch/arm64/configs/$Defconfig" | grep "CONFIG_LOCAL
 ZIP_KERNEL_VERSION="4.14.$(cat "$MainPath/Makefile" | grep "SUBLEVEL =" | sed 's/SUBLEVEL = *//g')$(cat "$(pwd)/Makefile" | grep "EXTRAVERSION =" | sed 's/EXTRAVERSION = *//g')"
 TIME=$(date +"%m%d%H%M")
 
-Compiler=CLANG
+# Start building
+Compiler=GCC
 MAKE="./makeparallel"
 rm -rf out
 BUILD_START=$(date +"%s")
@@ -54,13 +53,10 @@ make  -j$(nproc --all)  O=out ARCH=arm64 SUBARCH=arm64 $Defconfig
 exec 2> >(tee -a out/error.log >&2)
 
 make  -j$(nproc --all)  O=out \
-                        PATH="$clang/bin:$gcc64/bin:$gcc/bin:/usr/bin:$PATH" \
-                        LD_LIBRARY_PATH="$clang/lib64:$LD_LIBRABRY_PATH" \
-                        CC=clang \
+                        PATH=$GCC64/bin:$GCC/bin:/usr/bin:${PATH} \
                         LD=ld.lld \
-                        CROSS_COMPILE=aarch64-linux-android- \
-                        CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-                        CLANG_TRIPLE=aarch64-linux-gnu-
+                        CROSS_COMPILE=aarch64-zyc-linux-gnu- \
+                        CROSS_COMPILE_ARM32=arm-zyc-linux-gnueabi-
 
 if [ -e $MainPath/out/arch/arm64/boot/Image.gz-dtb ]; then
     BUILD_END=$(date +"%s")
