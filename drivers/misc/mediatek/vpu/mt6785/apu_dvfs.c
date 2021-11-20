@@ -600,18 +600,24 @@ int vpu_get_hw_vvpu_opp(int core)
 	vvpu_opp_3_vol = 10 * VPU_DVFS_VOLT9;
 
 	get_vvpu_value = (int)regulator_get_voltage(vvpu_reg_id);
-	if (get_vvpu_value >= vvpu_opp_0_vol)
+	if (get_vvpu_value >= vvpu_opp_0_vol) {
 		opp_value = 0;
-	else if (get_vvpu_value > vvpu_opp_1_vol)
+	}
+	else if (get_vvpu_value > vvpu_opp_1_vol) {
 		opp_value = 0;
-	else if (get_vvpu_value > vvpu_opp_2_vol)
+	}
+	else if (get_vvpu_value > vvpu_opp_2_vol) {
 		opp_value = 1;
-	else if (get_vvpu_value > vvpu_opp_3_vol)
+	}
+	else if (get_vvpu_value > vvpu_opp_3_vol) {
 		opp_value = 2;
-	else
+	}
+	else {
 		opp_value = 3;
-		LOG_DVFS("[vpu_%d] vvpu(%d->%d)\n",
-			core, get_vvpu_value, opp_value);
+	}
+	LOG_DVFS("[vpu_%d] vvpu(%d->%d)\n",
+		core, get_vvpu_value, opp_value);
+	
 	return opp_value;
 
 }
