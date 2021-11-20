@@ -1007,7 +1007,7 @@ static void cmdq_core_dump_secure_metadata(struct cmdqRecStruct *task)
 		"count:%d(%d), enginesNeedDAPC:0x%llx, enginesPortSecurity:0x%llx\n",
 		pSecData->addrMetadataCount, pSecData->addrMetadataMaxCount,
 		pSecData->enginesNeedDAPC, pSecData->enginesNeedPortSecurity);
-	CMDQ_LOG("SizeofiwcCmdqCommand_t:%d iwcCmdqMetadata_t:%d", sizeof(struct iwcCmdqCommand_t),
+	CMDQ_LOG("SizeofiwcCmdqCommand_t:%lu iwcCmdqMetadata_t:%lu", sizeof(struct iwcCmdqCommand_t),
 		sizeof(struct iwcCmdqMetadata_t));
 
 	if (!pAddr)
@@ -1025,18 +1025,18 @@ static void cmdq_core_dump_secure_metadata(struct cmdqRecStruct *task)
 		task->secData.enginesNeedDAPC,
 		task->secData.enginesNeedPortSecurity);
 
-	CMDQ_LOG("size of iwcCmdqCommand_t :%d\n",
+	CMDQ_LOG("size of iwcCmdqCommand_t :%lu\n",
 		sizeof(struct iwcCmdqCommand_t));
-	CMDQ_LOG("size of iwcCmdqMetadata_t :%d readback_engine  %d iwcCmdqAddrMetadata_t %d\n",
+	CMDQ_LOG("size of iwcCmdqMetadata_t :%lu readback_engine  %lu iwcCmdqAddrMetadata_t %lu\n",
 		sizeof(struct iwcCmdqMetadata_t),
 		sizeof(struct readback_engine),
 		sizeof(struct iwcCmdqAddrMetadata_t));
-	CMDQ_LOG("sizeof cmdqSecAddrMetadataStruct:%d cmdqSecDataStruct:%d cmdqCommandStruct:%d\n",
+	CMDQ_LOG("sizeof cmdqSecAddrMetadataStruct:%lu cmdqSecDataStruct:%lu cmdqCommandStruct:%lu\n",
 		sizeof(struct cmdqSecAddrMetadataStruct),
 		sizeof(struct cmdqSecDataStruct),
 		sizeof(struct cmdqCommandStruct));
 	CMDQ_LOG(
-		"is_secure:%d, waitCookie:%d, resetExecCnt:%d extension:%d mtee %d\n",
+		"is_secure:%d, waitCookie:%d, resetExecCnt:%d extension:%llu mtee %d\n",
 		pSecData->is_secure, pSecData->waitCookie, pSecData->resetExecCnt,
 		pSecData->extension, pSecData->mtee);
 }
@@ -1999,7 +1999,7 @@ static void cmdq_sec_exec_task_async_impl(struct work_struct *work_item)
 				CMDQ_MAX_COOKIE_VALUE) % CMDQ_MAX_COOKIE_VALUE;
 
 			CMDQ_ERR(
-				"gce: err:%d task:%p pkt:%p thread:%u task_cnt:%u wait_cookie:%u next_cookie:%u",
+				"gce: err:%lu task:%p pkt:%p thread:%u task_cnt:%u wait_cookie:%u next_cookie:%u",
 				(unsigned long) err, task, task->handle->pkt,
 				task->thread->idx, task->thread->task_cnt,
 				task->thread->wait_cookie, task->thread->next_cookie);
