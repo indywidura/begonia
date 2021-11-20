@@ -1359,7 +1359,7 @@ void disp_aal_on_start_of_frame(enum disp_aal_id_t id)
 	if (aal_sram_method != AAL_SRAM_SOF)
 		return;
 
-	AAL_DBG("[SRAM] g_aal_dre_config(%d) in SOF", g_aal_dre_config);
+	AAL_DBG("[SRAM] g_aal_dre_config(%s) in SOF", __func__);
 	disp_aal_update_dre3_sram(module, true);
 #endif
 }
