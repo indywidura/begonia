@@ -5389,8 +5389,8 @@ static int ISP_mmap(struct file *pFile, struct vm_area_struct *pVma)
 	case CAM_C_BASE_HW:
 		if (length > ISP_REG_RANGE) {
 			LOG_DBG(
-				"mmap range error :module(0x%x) length(0x%lx),ISP_REG_RANGE(0x%lx)!\n",
-				pfn, length, ISP_REG_RANGE);
+				"mmap range error :module(0x%s) length(0x%lx),ISP_REG_RANGE(0x%lx)!\n",
+				__func__, pfn, length, ISP_REG_RANGE);
 			return -EAGAIN;
 		}
 		break;
@@ -5403,8 +5403,8 @@ static int ISP_mmap(struct file *pFile, struct vm_area_struct *pVma)
 	case UNI_A_BASE_HW:
 		if (length > ISP_REG_RANGE/2) {
 			LOG_DBG(
-				"mmap range error :module(0x%x) length(0x%lx),ISP_REG_RANGE(0x%lx)!\n",
-				pfn, length, ISP_REG_RANGE/2);
+				"mmap range error :module(0x%s) length(0x%lx),ISP_REG_RANGE(0x%lx)!\n",
+				__func__, pfn, length, ISP_REG_RANGE/2);
 			return -EAGAIN;
 		}
 		break;
