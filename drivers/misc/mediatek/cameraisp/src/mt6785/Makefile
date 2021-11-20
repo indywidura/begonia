@@ -22,6 +22,8 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/timer/timesync/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/mmdvfs/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/smi/$(MTK_PLATFORM)/
 
+ccflags-y += -Wno-format-extra-args
+
 obj-y += camera_isp.o
 obj-y += cam_qos.o
 #obj-$(CONFIG_MTK_CAMERA_ISP_TSF_SUPPORT) += camera_tsf.o
