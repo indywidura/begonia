@@ -1028,7 +1028,7 @@ static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 		buffer_info->mva_cnt++;
 		buffer_info->port[domain_idx] = port_info.emoduleid;
 		IONDBG(
-		       "%d, iova mapping done, buffer:0x%p, port:%d, mva:0x%lx, fix:0x%lx, return:0x%lx, cnt=%d, domain%d\n",
+		       "%d, iova mapping done, buffer:0x%p, port:%d, mva:0x%lx, fix:0x%lx, return:0x%x, cnt=%d, domain%d\n",
 		       __LINE__, buffer, buffer_info->port[domain_idx],
 		       buffer_info->MVA[domain_idx],
 		       buffer_info->FIXED_MVA[domain_idx],
