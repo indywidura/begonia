@@ -223,7 +223,7 @@ static ssize_t opp_logs_show(struct kobject *kobj,
 				len += sprintf(buf + len, "*");
 			else
 				len += sprintf(buf + len, " ");
-			len += sprintf(buf + len, "%10lu",
+			len += sprintf(buf + len, "%10u",
 				1000 * mt_gpufreq_get_freq_by_idx(i));
 
 			/* truncate to ms */
